@@ -12,6 +12,7 @@ public:
 
     void zoom(float yoffset);
     void rotate(float delta_x=0, float delta_y=0, float delta_z = 0);
+    glm::vec3& cameraPosition(){return camera_position_;}
 
 private:
     glm::mat4 view_          = glm::mat4(1.0f);
@@ -23,7 +24,7 @@ private:
 
     float near_{0.1};
     float far_{100};
-    float fov_{50};
+    float fov_{70};
 
     float yaw_   = glm::radians(-135.0f);
     float pitch_ = glm::radians(-25.0f);

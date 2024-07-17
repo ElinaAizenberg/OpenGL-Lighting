@@ -34,7 +34,7 @@ void DrawingLib::drawScene(GLFWwindow *window, bool imGuiCaptureMouse) {
     {
         double x_coord, y_coord;
         unsigned char color[3] = {0};
-        session_.drawSession(view_mat, projection_mat, get_color_);
+        session_.drawSession(view_mat, projection_mat, dome_camera_.cameraPosition(), get_color_);
         glfwGetCursorPos(window, &x_coord, &y_coord);
 
         glReadPixels(x_coord, window_height_ - y_coord, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, color);
@@ -52,7 +52,7 @@ void DrawingLib::drawScene(GLFWwindow *window, bool imGuiCaptureMouse) {
     }
     else
     {
-        session_.drawSession(view_mat, projection_mat, get_color_);
+        session_.drawSession(view_mat, projection_mat, dome_camera_.cameraPosition(), get_color_);
     }
     ImGui::Render(); // Finalizes the ImGui frame and prepares the draw data for rendering.
     // Renders the compiled ImGui draw data using the OpenGL 3 backend.
