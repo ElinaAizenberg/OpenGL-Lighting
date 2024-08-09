@@ -5,9 +5,9 @@ An application to study OpenGL programming (shaders)
 ## Features
 
 ## Screenshots
-<image src="https://github.com/user-attachments/assets/c7571f90-c7f6-4d2a-a32f-c10edda86fb3"  width="500">
+<image src="https://github.com/user-attachments/assets/c7571f90-c7f6-4d2a-a32f-c10edda86fb3"  width="700">
   
-<image src="https://github.com/user-attachments/assets/1be1738e-34e9-4e83-b8c6-4afd82a40d6a"  width="500">
+<image src="https://github.com/user-attachments/assets/1be1738e-34e9-4e83-b8c6-4afd82a40d6a"  width="700">
 
 
 ## Getting Started
