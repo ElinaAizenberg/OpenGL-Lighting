@@ -1,34 +1,38 @@
-
 #include <fstream>
 #include <sstream>
 #include "imgui.h"
-#include "../include/gui.h"
 #include "portable-file-dialogs.h"
 #include "imgui_toggle.h"
+#include "../include/gui.h"
 
+void Gui::drawMainMenu()
+/** Draws the main Menu with several items and sub-menu for central object manipulation.
+If corresponding boolean is true, opens Help window.*/
+{
 
-void Gui::drawMainMenu() {
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
 
-    if (ImGui::BeginMainMenuBar()) {
-        if (ImGui::BeginMenu("File")) {
-
-            if (ImGui::MenuItem("Load central object")) {
+            if (ImGui::MenuItem("Load central object"))
+            {
                 openFile();
             }
-            if (ImGui::MenuItem("Add light source")) {
+            if (ImGui::MenuItem("Add light source"))
+            {
                 session_.addLightObject();
             }
 
-            if (ImGui::BeginMenu("Central object")){
+            if (ImGui::BeginMenu("Central object"))
+            {
                 auto col = session_.getCentralObject().getObjectColor();
                 ImGui::ColorEdit3("color", col);
                 ImGui::Spacing();
-
                 ImGui::SliderFloat("scale", &session_.getCentralObject().getScale(), 0.1, 10.0f, "x = %.1f");
-
                 ImGui::EndMenu();
             }
-            ImGui::MenuItem("Grid", nullptr, &session_.grid());
+            ImGui::MenuItem("Coordinate system", nullptr, &session_.coordinate_system());
 
             if (ImGui::MenuItem("Help"))
             {
@@ -42,13 +46,15 @@ void Gui::drawMainMenu() {
         }
         ImGui::EndMainMenuBar();
     }
-    if (help_window_){
+    if (help_window_)
+    {
         drawHelpWindow();
     }
-
 }
 
 void Gui::drawObjectsPanels()
+/** Iterates through the vector of Light objects in the session and if object's boolean gui_enabled is True,
+it draws individual panel for this object. */
 {
     auto& flash_light_objects = session_.getFlashLightObjects();
     for (auto & object : flash_light_objects)
@@ -57,7 +63,15 @@ void Gui::drawObjectsPanels()
     }
 }
 
-void Gui::drawIndividualPanel(FlashLightObject &object) const{
+void Gui::drawIndividualPanel(FlashLightObject &object) const
+/** Draws individual panel for a Light object where individual settings can be changed:
+    - turn on-off light;
+    - type of light;
+    - light's color, position, angle;
+    - light's parameters:
+        - spotlight -> cutOff
+        - point light -> linear/quadratic parameters. */
+{
     auto& gui_enabled = object.guiEnabled();
     auto& position_initialized = object.positionInited();
     auto& light = object.getLight();
@@ -78,11 +92,11 @@ void Gui::drawIndividualPanel(FlashLightObject &object) const{
         ImGui::Toggle(toggle_name.c_str(), &object.lightOnOff(), ImGuiToggleFlags_Animated);
 
         if (ImGui::RadioButton("Spotlight", &object.lightObjectType(), 0)){
-            object.loadObjectFile("/home/elina/MyProjects/object_files/Flashlight.obj");
+            object.loadObjectFile("../objects/Flashlight.obj");
             object.loadObjectBuffers();
         }
         if (ImGui::RadioButton("Point light", &object.lightObjectType(), 1)){
-            object.loadObjectFile("/home/elina/MyProjects/object_files/LightBulb.obj");
+            object.loadObjectFile("../objects/LightBulb.obj");
             object.loadObjectBuffers();
         }
         ImGui::Spacing();
@@ -136,7 +150,9 @@ void Gui::drawIndividualPanel(FlashLightObject &object) const{
     }
 }
 
-void Gui::openFile() {
+void Gui::openFile()
+/** Opens a file dialog to select an .obj file and loads it, notifies the user if no file is selected.*/
+{
     auto selection = pfd::open_file("Select a file", ".",
                                     { "Object Files", "*.obj"}).result();
     if (!selection.empty())
@@ -150,10 +166,11 @@ void Gui::openFile() {
     }
 }
 
-void Gui::exitConfirmMessage() {
+void Gui::exitConfirmMessage()
+/** Displays a confirmation dialog asking if the user wants to exit, exits the program if 'Yes' is selected. */
+{
     auto button = pfd::message("Action requested", "Are you sure you want to exit?",
                                pfd::choice::yes_no, pfd::icon::question).result();
-
     switch (button)
     {
         case pfd::button::yes:
@@ -163,12 +180,12 @@ void Gui::exitConfirmMessage() {
     }
 }
 
-void Gui::drawHelpWindow() {
+void Gui::drawHelpWindow()
+/** Prints README.txt file content with information related to all functionality in this project in n individual window. */
+{
     ImGui::Begin("Help", &help_window_);
     ImGui::TextWrapped("%s", readme_txt_.c_str());
     ImGui::End();
-
-
 }
 
 std::string Gui::readTextFile(const std::string &filePath)

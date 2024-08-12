@@ -8,8 +8,8 @@ if(POLICY CMP0072)
     cmake_policy(SET CMP0072 OLD)
 endif()
 
-set(GLAD /home/elina/MyProjects/libs/glad)
-set(EXTERNAL_LIB_DIR /home/elina/MyProjects/libs)
+set(GLAD /path_to_directory/libs/glad)
+set(EXTERNAL_LIB_DIR /path_to_directory/libs)
 
 # Define the path to the central ImGui directory
 set(IMGUI_DIR ${EXTERNAL_LIB_DIR}/imgui)

@@ -50,7 +50,7 @@ int main() {
     ImGui_ImplOpenGL3_CreateFontsTexture();
 
     session.loadCentralObject();
-    session.loadGrid();
+    session.loadCoordinateSystem();
     session.addLightObject();
 
     while (!glfwWindowShouldClose(window))

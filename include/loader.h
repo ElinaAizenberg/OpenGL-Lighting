@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "tiny_obj_loader.h"
+
 struct Vertex
 {
     float x, y, z;

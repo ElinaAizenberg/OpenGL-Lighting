@@ -15,9 +15,6 @@ public:
     glm::vec3& cameraPosition(){return camera_position_;}
 
 private:
-    glm::mat4 view_          = glm::mat4(1.0f);
-
-
     glm::vec3 camera_position_{};
     glm::vec3 target_position_{};
     glm::vec3 up_direction_{};

@@ -6,8 +6,8 @@
 #include <vector>
 #include "../include/shader.h"
 
-
-struct Light{
+// struct that contains lighting parameters for 2 types of light: point light and spotlight
+struct Light {
     int type;
     float rgb[3];
     glm::vec3 light_pos;
@@ -31,7 +31,6 @@ public:
     virtual float* getObjectColor(){return rgb_;}
     float& getScale(){return scale_;}
 
-
 protected:
     struct Vertex
     {
@@ -48,9 +47,6 @@ protected:
     GLuint VBO_{};
     GLuint NBO_{};
     GLuint EBO_{};
-
-    glm::mat4 model_ = glm::mat4(1.0f);
-
     ShaderProgram shaderProgram_;
 
     static std::vector<float> calculateNormalsSimple(std::vector<float> vertices);
@@ -59,16 +55,14 @@ protected:
 
 class FlashLightObject : public Object {
 public:
-
-
     FlashLightObject(const std::string& obj_filepath, const std::string& shader_vert, const std::string& shader_frag, int id, int pick_id=0, float pick_r=0, float pick_g=0, float pick_b=0);
     bool checkPickColor(int pick_color_id) const;
     void loadObjectBuffers() override;
     void draw(glm::mat4& view, glm::mat4& projection, bool get_pick_color = false);
 
-    void moveObject(float delta_x=0, float delta_y=0, float delta_z=0);
     void rotateObject(float delta_x=0, float delta_y=0);
 
+    std::string ObjectIdToString() const {return std::to_string(id_);};
     float* getObjectColor() override {return light_.rgb;}
     float* getObjectCoordinates(){return xyz_;}
     float* getObjectRotation(){return light_obj_params_[light_.type].frame_rotate_xy_;}
@@ -76,18 +70,12 @@ public:
     Light& getLight();
 
     void switchGuiEnabled(){object_gui_ = !object_gui_; is_position_initialized_ = false;}
-
     bool& guiEnabled() {return object_gui_;}
     bool& positionInited() {return is_position_initialized_;}
     int& lightObjectType(){return light_.type;}
-
-    std::string ObjectIdToString() const {return std::to_string(id_);};
-
-    void reset();
-
     bool& lightOnOff(){return lightOnOff_;}
 
-
+    void reset();
 
 private:
     struct LightObjParams{
@@ -127,39 +115,33 @@ private:
     LightObjParams light_bulb_params_ = LightObjParams({glm::vec3(0.1,0.1,0.1), 180.0f, glm::vec3(1.0, 0.0, 0.0)});
     std::vector<LightObjParams> light_obj_params_ = {flash_light_params_, light_bulb_params_};
 
-  //  float scale_{0.15};
     float xyz_[3] = {0,3,0};
-    //float rotate_xy_[2] = {0,0};
 
-    glm::vec3 translate_vec = glm::vec3(0, 0, 0);
-    glm::vec3 rotate_vec = glm::vec3(1.0, 0.0, 0.0);
-
+    glm::vec3 translate_vec_ = glm::vec3(0, 0, 0);
     bool object_gui_{false};
     bool is_position_initialized_{false};
 
+    glm::mat4 getTranslationMatrix(bool initial_rotate = false);
     glm::vec3 getFlashLightDirection();
     glm::vec3 getFlashLightPosition();
 
-
-
-
 };
 
-class GridObject : public Object {
+class AxisObject : public Object {
 public:
-    GridObject(const std::string& shader_vert, const std::string& shader_frag);
+    AxisObject(const std::string& shader_vert, const std::string& shader_frag);
     void loadObjectBuffers() override;
     void draw(glm::mat4& view, glm::mat4& projection);
 
 private:
-    float grid_scale_{5.0f};
+    float axis_scale_{5.0f};
+    glm::mat4 model_ = glm::mat4(1.0f);
 
     GLuint arrows_VBO_{};
     GLuint arrows_EBO_{};
 
     std::vector<GLfloat> arrows_vertices_;
     std::vector<GLuint> arrows_indices_;
-
 };
 
 

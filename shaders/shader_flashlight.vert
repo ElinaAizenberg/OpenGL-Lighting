@@ -8,5 +8,7 @@ uniform mat4 projection;
 
 void main()
 {
-    gl_Position = projection * view * model * vec4(aPos, 1.0f);
+    // this is used for objects that are not colored and do not reflect light, therefore there is no need for any
+    // vertex attributes other than position.
+    gl_Position = projection * view * model * vec4(aPos, 1.0f);   // correct order of matrix multiplication
 };

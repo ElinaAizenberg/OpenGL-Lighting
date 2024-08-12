@@ -5,5 +5,5 @@ uniform vec4 ourColor;
 
 void main()
 {
-   FragColor = ourColor;
+   FragColor = ourColor; // color vector is passed as uniform from application
 };
