@@ -103,7 +103,7 @@ void ShaderProgram::setMat4(const std::string &name, const glm::mat4 &mat) const
 }
 
 void ShaderProgram::checkCompileErrors(unsigned int shader, const std::string& type)
-/** Chacks if compilation/linking failed and if so, prints the compile-time errors.*/
+/** Checks if compilation/linking failed and if so, prints the compile-time errors.*/
 {
     GLint success;
     GLchar infoLog[1024];
